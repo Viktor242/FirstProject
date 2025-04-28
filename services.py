@@ -1,3 +1,5 @@
+import tkinter as tk
+
 # Функця добавления задачи
 def add_task(entry, task_listBox):
     task_text = entry.get()  # Получаем текст задачи из поля ввода
