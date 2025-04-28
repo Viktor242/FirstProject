@@ -1,9 +1,20 @@
-# Python
+# Python bytecode
 __pycache__/
 *.py[cod]
 *$py.class
 *.so
+
+# Python environment
 .Python
+env/
+venv/
+ENV/
+.venv/
+env.bak/
+venv.bak/
+.env
+
+# Distribution / packaging
 build/
 develop-eggs/
 dist/
@@ -20,52 +31,10 @@ wheels/
 .installed.cfg
 *.egg
 
-# Virtual Environment
-venv/
-env/
-ENV/
-.env
-.venv
-/.venv
-env.bak/
-venv.bak/
-
-# IDE specific files
-.idea/
-.vscode/
-*.swp
-*.swo
-.DS_Store
-
-# Project specific
-*.json
-!users.json
-!tasks.json
-*.log
-*.db
-*.sqlite3
-
-# Distribution / packaging
-.Python
-env/
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-*.egg-info/
-.installed.cfg
-*.egg
-
 # Unit test / coverage reports
 htmlcov/
 .tox/
+.nox/
 .coverage
 .coverage.*
 .cache
@@ -74,19 +43,39 @@ coverage.xml
 *.cover
 .hypothesis/
 
-# Translations
-*.mo
-*.pot
+# IDE/editor settings
+.idea/
+.vscode/
+.spyderproject
+.spyproject
+.ropeproject
+*.sublime-project
+*.sublime-workspace
+*.code-workspace
+*.swp
+*.swo
 
-# Django stuff:
-*.log
-local_settings.py
+# System files
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
 
-# Flask stuff:
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Flask / Django
 instance/
 .webassets-cache
+local_settings.py
 
-# Scrapy stuff:
+# Scrapy
 .scrapy
 
 # Sphinx documentation
@@ -95,35 +84,7 @@ docs/_build/
 # PyBuilder
 target/
 
-# Jupyter Notebook
-.ipynb_checkpoints
-
-# pyenv
-.python-version
-
-# celery beat schedule file
-celerybeat-schedule
-
-# SageMath parsed files
-*.sage.py
-
-# Environments
-.env
-.venv
-env/
-venv/
-ENV/
-env.bak/
-venv.bak/
-
-# Spyder project settings
-.spyderproject
-.spyproject
-
-# Rope project settings
-.ropeproject
-
-# mkdocs documentation
+# mkdocs
 /site
 
 # mypy
@@ -132,16 +93,18 @@ venv.bak/
 # Pyre type checker
 .pyre/
 
-# Windows specific
-Thumbs.db
-ehthumbs.db
-Desktop.ini
-$RECYCLE.BIN/
+# SageMath
+*.sage.py
 
-# macOS specific
-.DS_Store
-.AppleDouble
-.LSOverride
-._*
-.Spotlight-V100
-.Trashes
+# Database and logs
+*.log
+*.db
+*.sqlite3
+
+# Project specific (keep specific JSON files)
+*.json
+!users.json
+!tasks.json
+
+# Celery
+celerybeat-schedule
