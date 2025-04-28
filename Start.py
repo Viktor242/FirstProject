@@ -5,7 +5,7 @@ from services import add_task, delete_task
 
 # Создание главного окна
 root = tk.Tk()
-root.title("Управление задачами-Канбан")
+root.title("Управление задачами")
 root.geometry("500x600")
 
 # Метка для ввода задачи
