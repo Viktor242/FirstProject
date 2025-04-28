@@ -1,13 +1,12 @@
-# Импорт библиотек
 import tkinter as tk
 from tkinter import ttk
-from services import add_task, delete_task, mark_task_1, mark_task_2, mark_task_3
-from tkcalendar import Calendar
+from services import add_task, delete_task
+
 
 # Создание главного окна
 root = tk.Tk()
 root.title("Управление задачами-Канбан")
-root.geometry("800x600")
+root.geometry("500x600")
 
 # Метка для ввода задачи
 text1 = tk.Label(root, text="Пропиши задачу", font=("Arial", 14)).pack(pady=20)
@@ -17,40 +16,42 @@ entry = tk.Entry(root, width=30)
 entry.pack(pady=25, ipadx=100)
 
 # Кнопка добавления задачи
-button1 = tk.Button(root, text="Добавить задачу", font=("Arial", 10), command=lambda: add_task(entry, task_listBox))
-button1.place(x=210, y=150)
+button1 = tk.Button(root, text="Добавить задачу", command=lambda: add_task(entry, task_listBox))
+button1.place(x=50, y=150)
 
 # Кнопка удаления задачи
-button2 = tk.Button(root, text="Удалить задачу", font=("Arial", 10), command=lambda: delete_task(task_listBox))
-button2.place(x=500, y=150)
-
-# Кнопки изменения статуса задач (примечание: все названы mark_button_1)
-mark_button_1 = tk.Button(root, text="Отметить задачу в процессе", command=lambda: mark_task_1(task_listBox))
-mark_button_1.place(x=100, y=500)
-
-mark_button_1 = tk.Button(root, text="Отметить задачу выполненной", command=lambda: mark_task_2(task_listBox))
-mark_button_1.place(x=280, y=500)
-
-mark_button_1 = tk.Button(root, text="Отметить задачу просроченной", command=lambda: mark_task_3(task_listBox))
-mark_button_1.place(x=500, y=500)
+button2 = tk.Button(root, text="Удалить задачу", command=lambda: delete_task(task_listBox))
+button2.place(x=200, y=150)
 
 # Таблица для отображения задач
-task_listBox = ttk.Treeview(root, columns=("Task1"), show="headings")
-task_listBox.column("Task1", width=400)
+task_listBox = ttk.Treeview(root, columns=("Task1", "Status"), show="headings")
+task_listBox.column("Task1", width=200)
 task_listBox.heading("Task1", text="Текущие задачи")
-task_listBox.place(x=200, y=250)
+# Добавляем столбец для статуса
+task_listBox.column("Status", width=100)
+task_listBox.heading("Status", text="Статус")
+task_listBox.place(x=100, y=250)
 
-# Функция и кнопка для отображения календаря
-def show_calendar():
-    top = tk.Toplevel(root)
-    top.title("Календарь")
-    cal = Calendar(top, selectmode='day', year=2023, month=11, day=1)
-    cal.pack(pady=20)
-    close_btn = tk.Button(top, text="Закрыть", command=top.destroy)
-    close_btn.pack(pady=10)
+# Стилизация таблицы
+style = ttk.Style()
+style.configure("Treeview.Heading", foreground="blue")
 
-show_button = tk.Button(root, text="Показать календарь", command=show_calendar)
-show_button.place(x=50, y=50)
+# Создаем выпадающий список для изменения статуса
+status_options = ["В процессе", "Выполнено", "Просрочено"]
+status_var = tk.StringVar()
+status_combobox = ttk.Combobox(root, textvariable=status_var, values=status_options, state="readonly")
+status_combobox.place(x=310, y=200)
+status_combobox.set("Выбрать статус")
+
+# Функция для изменения статуса выбранной задачи
+def change_status():
+    selected_item = task_listBox.selection()
+    if selected_item:
+        task_listBox.set(selected_item, column="Status", value=status_var.get())
+
+# Кнопка для применения изменения статуса
+change_status_button = tk.Button(root, text="Изменить статус", command=change_status)
+change_status_button.place(x=350, y=150)
 
 # Запуск основного цикла приложения
 root.mainloop()
