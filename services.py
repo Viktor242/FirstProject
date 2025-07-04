@@ -1,15 +1,50 @@
-import tkinter as tk
+import json
+from typing import List
 
-# Функця добавления задачи
-def add_task(entry, task_listBox):
-    task_text = entry.get()  # Получаем текст задачи из поля ввода
-    if task_text:  # Проверяем, что поле не пустое
-        # Добавляем задачу в Treeview с начальным статусом "Не начата"
-        task_listBox.insert("", "end", values=(task_text, "Не начата"))  
-        entry.delete(0, tk.END)  # Очищаем поле ввода после добавления
-        
-# Функця удаления задачи
-def delete_task(task_listBox):
-    selected_item = task_listBox.selection()  # Получаем выбранный элемент
-    if selected_item:  # Если элемент выбран
-        task_listBox.delete(selected_item)  # Удаляем его
+class Task:
+    def __init__(self, text: str, status: str = "Не начата"):
+        self.text = text
+        self.status = status
+
+    def to_dict(self):
+        return {"text": self.text, "status": self.status}
+
+    @staticmethod
+    def from_dict(data):
+        return Task(data["text"], data["status"])
+
+class TaskManager:
+    def __init__(self, storage_file: str = "tasks.json"):
+        self.tasks: List[Task] = []
+        self.storage_file = storage_file
+        self.load_tasks()
+
+    def add_task(self, text: str):
+        if text:
+            self.tasks.append(Task(text))
+            self.save_tasks()
+
+    def delete_task(self, index: int):
+        if 0 <= index < len(self.tasks):
+            del self.tasks[index]
+            self.save_tasks()
+
+    def change_status(self, index: int, new_status: str):
+        if 0 <= index < len(self.tasks):
+            self.tasks[index].status = new_status
+            self.save_tasks()
+
+    def get_tasks(self):
+        return self.tasks
+
+    def save_tasks(self):
+        with open(self.storage_file, "w", encoding="utf-8") as f:
+            json.dump([task.to_dict() for task in self.tasks], f, ensure_ascii=False, indent=2)
+
+    def load_tasks(self):
+        try:
+            with open(self.storage_file, "r", encoding="utf-8") as f:
+                data = json.load(f)
+                self.tasks = [Task.from_dict(item) for item in data]
+        except (FileNotFoundError, json.JSONDecodeError):
+            self.tasks = []
